@@ -1,3 +1,4 @@
+import json
 import os
 
 from crypto_files.decode import decode_pass
@@ -18,8 +19,18 @@ def encode_vault(salt: str):
 
 
 def decode_vault(salt: str):
-    with open("vault/passwords.txt", "r") as vault_file:
-        vault = vault_file.read()
+    try:
+        with open("vault/passwords.txt", "r") as vault_file:
+            vault = vault_file.read()
+    except FileNotFoundError:
+        vault = {}
+        with open("vault/passwords.json", "w") as vault_file:
+            json.dump(vault, vault_file)
+
+        encode_vault(salt)
+
+        with open("vault/passwords.txt", "r") as vault_file:
+            vault = vault_file.read()
 
     vault = decode_pass(vault, salt)
 
