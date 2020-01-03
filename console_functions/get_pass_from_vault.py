@@ -13,6 +13,7 @@ def copy_to_clipboard(text):
 
 
 def get_pass_from_vault():
+
     salt = get_vault_password()
     with open("vault/passwords.json", "r") as in_file:
         keys = [decode_pass(key, salt) for key in json.load(in_file).keys()]
@@ -34,7 +35,10 @@ def get_pass_from_vault():
             if key == _input:
                 with open("vault/passwords.json", "r") as in_file:
                     _json = json.load(in_file)
-                print(f'\nUsername: {decode_pass(_json[encode_pass(key, salt)]["Username"], salt)}')
-                copy_to_clipboard(decode_pass(_json[encode_pass(key, salt)]["Password"], salt))
-                print("Password Copied to clipboard")
-                return
+
+                    username = decode_pass(_json[encode_pass(key, salt)][encode_pass("Username", salt)], salt)
+                    print(f'\nUsername: {username}')
+                    password = encode_pass("Password", salt)
+                    copy_to_clipboard(decode_pass(_json[encode_pass(key, salt)][password], salt))
+                    print("Password Copied to clipboard")
+                    return

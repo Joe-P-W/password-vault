@@ -1,5 +1,6 @@
 import json
 from getpass import getpass
+import random
 
 from crypto_files.encode import encode_pass
 from console_functions.get_vault_password import get_vault_password
@@ -21,10 +22,19 @@ def enter_password_to_vault():
     with open("vault/passwords.json", "r") as in_file:
         _json = json.load(in_file)
 
-    _json[encode_pass(site, salt)] = {
-        "Username": encode_pass(user, salt),
-        "Password": encode_pass(password, salt)
-    }
+    num = random.randint(1, 2)
+
+    if num == 1:
+        _json[encode_pass(site, salt)] = {
+            encode_pass("Username", salt): encode_pass(user, salt),
+            encode_pass("Password", salt): encode_pass(password, salt)
+        }
+
+    else:
+        _json[encode_pass(site, salt)] = {
+            encode_pass("Password", salt): encode_pass(password, salt),
+            encode_pass("Username", salt): encode_pass(user, salt)
+        }
 
     with open("vault/passwords.json", "w") as out_file:
         json.dump(_json, out_file)
