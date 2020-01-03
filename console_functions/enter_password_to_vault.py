@@ -4,11 +4,12 @@ import random
 
 from crypto_files.encode import encode_pass
 from console_functions.get_vault_password import get_vault_password
+from crypto_files.encode_vault import decode_vault, encode_vault
 
 
 def enter_password_to_vault():
     salt = get_vault_password()
-
+    decode_vault(salt)
     site = input("What is this for? ")
     user = input("Username? ")
     while True:
@@ -38,3 +39,5 @@ def enter_password_to_vault():
 
     with open("vault/passwords.json", "w") as out_file:
         json.dump(_json, out_file)
+
+    encode_vault(salt)

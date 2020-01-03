@@ -4,6 +4,7 @@ import os
 from crypto_files.encode import encode_pass
 from crypto_files.decode import decode_pass
 from console_functions.get_vault_password import get_vault_password
+from crypto_files.encode_vault import decode_vault, encode_vault
 
 
 def copy_to_clipboard(text):
@@ -13,8 +14,8 @@ def copy_to_clipboard(text):
 
 
 def get_pass_from_vault():
-
     salt = get_vault_password()
+    decode_vault(salt)
     with open("vault/passwords.json", "r") as in_file:
         keys = [decode_pass(key, salt) for key in json.load(in_file).keys()]
     while True:
@@ -41,4 +42,5 @@ def get_pass_from_vault():
                     password = encode_pass("Password", salt)
                     copy_to_clipboard(decode_pass(_json[encode_pass(key, salt)][password], salt))
                     print("Password Copied to clipboard")
-                    return
+                encode_vault(salt)
+                return
