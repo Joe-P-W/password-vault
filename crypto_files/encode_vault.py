@@ -6,6 +6,7 @@ from crypto_files.encode import encode_pass
 
 def encode_vault(salt: str):
     with open("vault/passwords.json", "r") as vault_file:
+
         vault = vault_file.read()
 
     vault = encode_pass(vault, salt)
