@@ -4,13 +4,10 @@ import os
 from crypto_files.encode import encode_pass
 from crypto_files.decode import decode_pass
 from console_functions.get_vault_password import get_vault_password
-from crypto_files.encode_vault import decode_vault, encode_vault
-
 
 def copy_to_clipboard(text):
     command = 'echo ' + text.strip() + '| clip'
     os.system(command)
-
 
 
 def get_pass_from_vault():

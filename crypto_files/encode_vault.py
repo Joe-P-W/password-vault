@@ -1,5 +1,6 @@
 import json
 import os
+import random
 
 from crypto_files.decode import decode_pass
 from crypto_files.encode import encode_pass
@@ -7,7 +8,18 @@ from crypto_files.encode import encode_pass
 
 def encode_vault(salt: str):
     with open("vault/passwords.json", "r") as vault_file:
+        vault = json.load(vault_file)
 
+    keys = list(vault.keys())
+    random.shuffle(keys)
+    shuffled_vault = dict()
+    for key in keys:
+        shuffled_vault.update({key: vault[key]})
+
+    with open("vault/passwords.json", "w") as vault_file:
+        json.dump(shuffled_vault, vault_file)
+
+    with open("vault/passwords.json", "r") as vault_file:
         vault = vault_file.read()
 
     vault = encode_pass(vault, salt)

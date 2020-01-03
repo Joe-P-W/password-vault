@@ -4,7 +4,6 @@ import random
 
 from crypto_files.encode import encode_pass
 from console_functions.get_vault_password import get_vault_password
-from crypto_files.encode_vault import decode_vault, encode_vault
 
 
 def enter_password_to_vault():
