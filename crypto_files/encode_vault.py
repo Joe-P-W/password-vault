@@ -33,8 +33,8 @@ def encode_vault(salt: str):
     with open("vault/passwords.json", "r") as vault_file:
         vault = vault_file.read()
 
-    padding1 = pad(random.randint(5, 200))
-    padding2 = pad(random.randint(5, 200))
+    padding1 = pad(random.randint(5, 500))
+    padding2 = pad(random.randint(5, 500))
     vault = padding1 + vault + padding2
     vault = encode_pass(vault, salt)
 
@@ -59,7 +59,9 @@ def decode_vault(salt: str):
             vault = vault_file.read()
 
     vault = decode_pass(vault, salt)
-    vault = "{" + "}".join(("{".join(vault.split("{")[1:])).split("}")[:-1]) + "}"
+
+    vault = "}".join(("{".join(vault.split("{")[1:])).split("}")[:-1])
+    vault = "{" + vault + "}"
 
     with open("vault/passwords.json", "w") as vault_file:
         vault_file.write(vault)

@@ -18,6 +18,8 @@ def get_vault_password():
             sys.exit()
         else:
             vault_pass = getpass("Enter your vault password: ")
+            if vault_pass.lower() == "back":
+                return "go back"
             with open("vault/vault_pass.json", "r") as in_file:
                 _json = json.load(in_file)
                 vault_hash = _json["hash"]
