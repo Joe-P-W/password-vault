@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import time
 from getpass import getpass
 
 from console_functions.get_salt_from_pass import get_salt_from_password
@@ -14,7 +15,10 @@ def get_vault_password():
     x = 0
     while True:
         if x > 3:
-            print("Too many attempts")
+            for i in range(3):
+                print(f"Vault guards coming to kick you out in {3 - i} ", end="\r")
+                time.sleep(1)
+                sys.stdout.write("\x1b[2K")
             sys.exit()
         else:
             vault_pass = getpass("Enter your vault password: ")

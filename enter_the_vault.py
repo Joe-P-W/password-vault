@@ -1,5 +1,6 @@
 import subprocess
 import os
+import sys
 
 from console_functions.check_vault_health import check_vault_health
 from console_functions.get_vault_password import get_vault_password
@@ -10,5 +11,6 @@ os.system("title Vault Doors")
 salt = get_vault_password()
 healthy = check_vault_health(salt)
 decode_vault(salt)
-subprocess.call(f'start /wait py -m vault.vault_console {healthy}', shell=True)
+subprocess.call(f'start /wait {"py" if sys.platform == "win32" else "python3"} -m vault.vault_console {healthy}',
+                shell=True)
 encode_vault(salt)

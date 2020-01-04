@@ -4,8 +4,10 @@ from character_map.maps import maps
 
 
 def generate_password() -> str:
-    password = ""
+    password = random.choice("1234567890") + random.choice("!\"£$%^&*-_=+")
     for i in range(random.randint(10, 20)):
         password += random.choice(maps[:90])
 
-    return password
+    random.shuffle(list(password))
+
+    return "".join(password)

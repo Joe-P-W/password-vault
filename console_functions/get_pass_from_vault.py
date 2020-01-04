@@ -9,7 +9,7 @@ from console_functions.get_vault_password import get_vault_password
 
 
 def copy_to_clipboard(text):
-    subprocess.run("clip", universal_newlines=True, input=text)
+    subprocess.run(f'{"clip" if sys.platform == "win32" else "pbcopy"}', universal_newlines=True, input=text)
 
 
 def get_pass_from_vault():
