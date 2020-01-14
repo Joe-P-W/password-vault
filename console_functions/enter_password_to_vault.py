@@ -1,4 +1,3 @@
-import json
 import sys
 import time
 from getpass import getpass
@@ -47,8 +46,6 @@ def enter_password_to_vault(vault: Vault):
             return
         else:
             print("\nSorry what you typed did not match try again: ")
-
-
 
     num = random.randint(1, 2)
 

@@ -12,7 +12,6 @@ class Vault:
         self.salt = salt
 
     def __enter__(self):
-
         self.decode_vault()
         return self
 
@@ -20,7 +19,6 @@ class Vault:
         self.encode_vault()
 
     def encode_vault(self):
-
         vault = self.passwords
 
         keys = list(vault.keys())

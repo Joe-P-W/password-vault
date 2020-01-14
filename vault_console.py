@@ -34,9 +34,8 @@ if __name__ == "__main__":
         try:
             main(vault)
         except (SystemExit, KeyboardInterrupt):
-            vault.encode_vault()
+            pass
         except:
-            vault.encode_vault()
             error = traceback.format_exc()
             with open(f"error_logger/error_{datetime.now().strftime('%d-%m-%Y_%H-%M')}.txt", "w") as error_file:
                 error_file.write(error)
