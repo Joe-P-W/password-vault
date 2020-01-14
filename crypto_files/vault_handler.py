@@ -7,10 +7,19 @@ from crypto_files.encode import encode_pass
 
 
 class Vault:
-    def __index__(self):
+    def __init__(self, salt):
         self.vault_json = None
+        self.salt = salt
 
-    def encode_vault(self, salt: str):
+    def __enter__(self):
+
+        self.decode_vault()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.encode_vault()
+
+    def encode_vault(self):
 
         vault = self.vault_json
 
@@ -22,34 +31,35 @@ class Vault:
 
         vault = json.dumps(shuffled_vault)
 
-        padding1 = self.pad(random.randint(5, 500))
-        padding2 = self.pad(random.randint(5, 500))
+        padding1 = self._pad(random.randint(5, 500))
+        padding2 = self._pad(random.randint(5, 500))
         vault = padding1 + vault + padding2
-        vault = encode_pass(vault, salt)
+        vault = encode_pass(vault, self.salt)
 
         with open("vault/passwords.txt", "w") as vault_file:
             vault_file.write(vault)
 
-    def decode_vault(self, salt: str):
+    def decode_vault(self):
         try:
             with open("vault/passwords.txt", "r") as vault_file:
                 vault = vault_file.read()
         except FileNotFoundError:
             self.vault_json = {}
 
-            self.encode_vault(salt)
+            self.encode_vault()
 
             with open("vault/passwords.txt", "r") as vault_file:
                 vault = vault_file.read()
 
-        vault = decode_pass(vault, salt)
+        vault = decode_pass(vault, self.salt)
 
         vault = "}".join(("{".join(vault.split("{")[1:])).split("}")[:-1])
         vault = "{" + vault + "}"
 
         self.vault_json = json.loads(vault)
 
-    def pad(self, length: int):
+    @staticmethod
+    def _pad(length: int):
         padding = ""
         for i in range(length):
             letter = random.choice(maps)

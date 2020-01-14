@@ -8,7 +8,7 @@ from console_functions.get_vault_password import get_vault_password
 from crypto_files.vault_handler import Vault
 
 
-def main(vault: Vault):
+def main(_vault: Vault):
 
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -19,33 +19,25 @@ def main(vault: Vault):
             break
 
         elif command == "enter password" or command == "enter pass":
-            enter_password_to_vault(vault)
+            enter_password_to_vault(_vault)
 
         elif command == "get password" or command == "get pass":
-            get_pass_from_vault(vault)
-
-
+            get_pass_from_vault(_vault)
 
 
 if __name__ == "__main__":
 
-    vault = Vault()
-
-    try:
-        os.system("title Vault Doors")
-        salt = get_vault_password()
-        os.system("title Vault Doors")
-        vault.decode_vault(salt)
-        main(vault)
-    except (SystemExit, KeyboardInterrupt):
-        pass
-    except:
-        error = traceback.format_exc()
-        with open(f"error_logger/error_{datetime.now().strftime('%d-%m-%Y_%H-%M')}.txt", "w") as error_file:
-            error_file.write(error)
-        raise
-    finally:
+    os.system("title Vault Doors")
+    os.system("title Vault Doors")
+    salt = get_vault_password()
+    with Vault(salt) as vault:
         try:
-            vault.encode_vault(salt)
-        except NameError:
-            pass
+            main(vault)
+        except (SystemExit, KeyboardInterrupt):
+            vault.encode_vault()
+        except:
+            vault.encode_vault()
+            error = traceback.format_exc()
+            with open(f"error_logger/error_{datetime.now().strftime('%d-%m-%Y_%H-%M')}.txt", "w") as error_file:
+                error_file.write(error)
+            raise

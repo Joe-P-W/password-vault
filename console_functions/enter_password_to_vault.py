@@ -64,7 +64,7 @@ def enter_password_to_vault(vault: Vault):
             encode_pass("Username", salt): encode_pass(user, salt)
         }
 
-    vault.encode_vault(salt)
+    vault.encode_vault()
 
     for i in range(5):
         print(f"Password entered into the vault taking you back in {5-i}.", end="\r")
