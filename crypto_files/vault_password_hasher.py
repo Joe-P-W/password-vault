@@ -32,11 +32,6 @@ def mask(password: str, salt: int) -> str:
                 else:
                     indexes.append(round(x * key / i))
 
-    for i in range(1, len(letters)):
-        if i * holes >= len(letters):
-            break
-        letters = letters[:i * holes] + letters[i * holes + 1:]
-
     for i in range(len(indexes)):
         if int(indexes[i]) >= len(letters):
             for x in range(1, len(letters)):
@@ -47,8 +42,13 @@ def mask(password: str, salt: int) -> str:
         except IndexError:
             hash_.append(letters[0])
 
+    _stop = False
     for index, value in enumerate(list(letters)):
         if value in hash_:
             hash_.pop((index+hash_hole)%len(hash_))
+            if _stop:
+                break
+            else:
+                _stop = True
 
     return "".join(hash_)

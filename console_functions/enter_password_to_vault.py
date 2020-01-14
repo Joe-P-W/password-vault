@@ -8,9 +8,10 @@ from console_functions.get_pass_from_vault import copy_to_clipboard
 from console_functions.random_pass_gen import generate_password
 from crypto_files.encode import encode_pass
 from console_functions.get_vault_password import get_vault_password
+from crypto_files.vault_handler import Vault
 
 
-def enter_password_to_vault():
+def enter_password_to_vault(vault: Vault):
     salt = get_vault_password()
     if salt == "go back":
         return
@@ -47,25 +48,23 @@ def enter_password_to_vault():
         else:
             print("\nSorry what you typed did not match try again: ")
 
-    with open("vault/passwords.json", "r") as in_file:
-        _json = json.load(in_file)
+
 
     num = random.randint(1, 2)
 
     if num == 1:
-        _json[encode_pass(site, salt)] = {
+        vault.vault_json[encode_pass(site, salt)] = {
             encode_pass("Username", salt): encode_pass(user, salt),
             encode_pass("Password", salt): encode_pass(password, salt)
         }
 
     else:
-        _json[encode_pass(site, salt)] = {
+        vault.vault_json[encode_pass(site, salt)] = {
             encode_pass("Password", salt): encode_pass(password, salt),
             encode_pass("Username", salt): encode_pass(user, salt)
         }
 
-    with open("vault/passwords.json", "w") as out_file:
-        json.dump(_json, out_file)
+    vault.encode_vault(salt)
 
     for i in range(5):
         print(f"Password entered into the vault taking you back in {5-i}.", end="\r")
