@@ -53,13 +53,13 @@ def enter_password_to_vault(vault: Vault):
     num = random.randint(1, 2)
 
     if num == 1:
-        vault.vault_json[encode_pass(site, salt)] = {
+        vault.passwords[encode_pass(site, salt)] = {
             encode_pass("Username", salt): encode_pass(user, salt),
             encode_pass("Password", salt): encode_pass(password, salt)
         }
 
     else:
-        vault.vault_json[encode_pass(site, salt)] = {
+        vault.passwords[encode_pass(site, salt)] = {
             encode_pass("Password", salt): encode_pass(password, salt),
             encode_pass("Username", salt): encode_pass(user, salt)
         }

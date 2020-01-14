@@ -18,7 +18,7 @@ def get_pass_from_vault(vault: Vault):
     if salt == "go back":
         return
 
-    keys = [decode_pass(key, salt) for key in vault.vault_json.keys()]
+    keys = [decode_pass(key, salt) for key in vault.passwords.keys()]
     while True:
 
         _input = input("\n\nWhat credentials do you want? ")
@@ -38,7 +38,7 @@ def get_pass_from_vault(vault: Vault):
 
         for key in keys:
             if key == _input:
-                _json = vault.vault_json
+                _json = vault.passwords
 
                 username = decode_pass(_json[encode_pass(key, salt)][encode_pass("Username", salt)], salt)
                 print(f'\nUsername: {username}')

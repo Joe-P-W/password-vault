@@ -8,7 +8,7 @@ from crypto_files.encode import encode_pass
 
 class Vault:
     def __init__(self, salt):
-        self.vault_json = None
+        self.passwords = None
         self.salt = salt
 
     def __enter__(self):
@@ -21,7 +21,7 @@ class Vault:
 
     def encode_vault(self):
 
-        vault = self.vault_json
+        vault = self.passwords
 
         keys = list(vault.keys())
         random.shuffle(keys)
@@ -44,7 +44,7 @@ class Vault:
             with open("vault/passwords.txt", "r") as vault_file:
                 vault = vault_file.read()
         except FileNotFoundError:
-            self.vault_json = {}
+            self.passwords = {}
 
             self.encode_vault()
 
@@ -56,7 +56,7 @@ class Vault:
         vault = "}".join(("{".join(vault.split("{")[1:])).split("}")[:-1])
         vault = "{" + vault + "}"
 
-        self.vault_json = json.loads(vault)
+        self.passwords = json.loads(vault)
 
     @staticmethod
     def _pad(length: int):
