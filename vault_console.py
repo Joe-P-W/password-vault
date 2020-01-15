@@ -28,10 +28,9 @@ def main(_vault: Vault):
 if __name__ == "__main__":
 
     os.system("title Vault Doors")
-    os.system("title Vault Doors")
-    salt = get_vault_password()
-    with Vault(salt) as vault:
+    with Vault() as vault:
         try:
+            os.system("title Vault")
             main(vault)
         except (SystemExit, KeyboardInterrupt):
             pass

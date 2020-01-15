@@ -2,14 +2,15 @@ import json
 import random
 
 from character_map.maps import maps
+from console_functions.get_vault_password import get_vault_password
 from crypto_files.decode import decode_pass
 from crypto_files.encode import encode_pass
 
 
 class Vault:
-    def __init__(self, salt):
+    def __init__(self):
         self.passwords = None
-        self.salt = salt
+        self.salt = get_vault_password()
 
     def __enter__(self):
         self.decode_vault()
